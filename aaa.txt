@@ -1,0 +1,116 @@
+<header class="header">
+        <div class="header-overlay"></div>
+        <div class="header-particles">
+            <span style="width: 30px; height: 30px; top: 10%; left: 20%;"></span>
+            <span style="width: 50px; height: 50px; top: 30%; right: 10%;"></span>
+            <span style="width: 20px; height: 20px; bottom: 20%; left: 50%;"></span>
+        </div>
+        <div class="header-content">
+            <h1 class="header-title">Türkiye'nin Sesi</h1>
+            <p class="header-subtitle">Demokrasi, adalet ve toplumsal değişim için harekete geçen yurttaşların ortak platformu</p>
+            <div class="header-actions">
+                <a href="#" class="btn btn-primary">Protestoları İncele</a>
+                <a href="#" class="btn btn-secondary">Nasıl Destek Olunur</a>
+            </div>
+        </div>
+    </header>
+
+
+
+    .header {
+    position: fixed;
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    color: #ffffff;
+    /* padding: 60px 20px; */
+    text-align: center;
+    position: fixed;
+    top: 0;
+    overflow: hidden;
+    width: 100%;
+    padding-bottom: 30px;
+}
+.header-content {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+.header-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    background: linear-gradient(to right, #e94560, #ffffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.header-subtitle {
+    font-size: 1.25rem;
+    font-weight: 300;
+    color: #e2e2e2;
+    margin-bottom: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.header-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.btn-primary {
+    background-color: #e94560;
+    color: white;
+    border: 2px solid #e94560;
+}
+.btn-primary:hover {
+    background-color: transparent;
+    color: #e94560;
+}
+.btn-secondary {
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+}
+.btn-secondary:hover {
+    background-color: white;
+    color: #1a1a2e;
+}
+.header-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 30% 107%, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.2) 100%);
+    z-index: 1;
+}
+.header-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.3;
+}
+.header-particles span {
+    position: absolute;
+    background: rgba(255,255,255,0.1);
+    animation: particle-animation 10s linear infinite;
+}
+@keyframes particle-animation {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(100vh) rotate(360deg); }
+}

@@ -1,0 +1,400 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1A2C4F;
+    font-family: monospace;
+    color: #ECF0F1;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.2),rgba(0, 0, 0, 0.2)),url(https://demokrasi2025.com/Signature_of_Mustafa_Kemal_Atat%C3%BCrk.svg);
+}
+.city {
+    stroke: #1A2C4F;
+    cursor: pointer;
+    transition: fill 0.9s;
+}
+.city:hover {
+    fill: rgb(255, 255, 255);
+}
+.point {
+    fill: #ffffff;
+    stroke: #1A2C4F;
+    stroke-width: 1px;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+}
+
+
+#information {
+ width: 100%;
+}
+
+
+hr {
+    border: 1px solid #ECF0F1; width: 80%; margin: 20px auto;
+}
+
+
+/* AI PART */
+
+:root {
+    --dark-blue: #1A2C4F;
+    --vivid-red: #D3212D;
+    --gray-shade: #34495E;
+    --light-gray: #ECF0F1;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--dark-blue);
+    color: var(--light-gray);
+}
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 5%;
+    background-color: rgba(26, 44, 79, 0.95);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.logo-icon {
+    width: 55px;
+    height: 55px;
+    background-color: var(--vivid-red);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: white;
+    box-shadow: 0 4px 10px rgba(211,33,45,0.3);
+    transition: transform 0.3s ease;
+}
+.logo-icon:hover {
+    transform: scale(1.05);
+}
+.logo-text {
+    display: flex;
+    flex-direction: column;
+}
+.logo-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--light-gray);
+    letter-spacing: -0.5px;
+}
+.logo-subtitle {
+    font-size: 0.85rem;
+    color: var(--light-gray);
+    opacity: 0.7;
+}
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+.nav-link {
+    text-decoration: none;
+    color: var(--light-gray);
+    font-weight: 600;
+    position: relative;
+    transition: all 0.3s ease;
+    padding: 5px 0;
+}
+.nav-link::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--vivid-red);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    transform-origin: right;
+}
+.nav-link:hover {
+    color: var(--vivid-red);
+}
+.nav-link:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+.action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.btn {
+    padding: 12px 22px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.btn-primary {
+    background-color: var(--vivid-red);
+    color: white;
+    border: 2px solid var(--vivid-red);
+    box-shadow: 0 4px 10px rgba(211,33,45,0.3);
+}
+.btn-primary:hover {
+    background-color: transparent;
+    color: var(--vivid-red);
+}
+.btn-secondary {
+    background-color: transparent;
+    color: var(--light-gray);
+    border: 2px solid var(--light-gray);
+}
+.btn-secondary:hover {
+    background-color: var(--light-gray);
+    color: var(--dark-blue);
+}
+.lang-switch {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 20px;
+}
+.lang-btn {
+    background: none;
+    border: none;
+    color: var(--light-gray);
+    opacity: 0.5;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.lang-btn.active {
+    color: var(--vivid-red);
+    opacity: 1;
+}
+
+.tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 14px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.city-ranking {
+    width: 100%;
+    margin: 40px auto;
+    text-align: center;
+    color: white;
+}
+.citylst {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+    margin: 25px;
+}
+.city-name {
+    width: 20%;
+    text-align: left;
+}
+.progress-bar {
+    height: 20px;
+    width: 50%;
+    border-radius: 10px;
+}
+.percentage {
+    width: 10%;
+    text-align: right;
+}
+
+/* Popup Arka Planı */
+.popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+}
+
+/* Popup Kutusu */
+.popup {
+    background: white;
+    padding: 20px;
+    width: 350px;
+    text-align: center;
+    border-radius: 10px;
+    -webkit-box-shadow: 0px 0px 50px -12px rgba(255,0,0,1);
+    -moz-box-shadow: 0px 0px 50px -12px rgba(255,0,0,1);
+    box-shadow: 0px 0px 50px -12px rgba(255,0,0,1);
+    position: relative;
+}
+
+
+.popup h2{
+    color: #1A2C4F;
+   
+}
+
+/* Kapatma Butonu */
+.close-popup {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    color: black;
+}
+
+/* Seçim Kutusu */
+select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Katılım Butonu */
+#participateBtn {
+    background: #ff4500;
+    color: white;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    margin-top: 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#participateBtn:hover {
+    background: #cc3700;
+}
+
+
+@media screen and (max-width: 968px) {
+
+
+    #cv1s {
+        display:none;
+    }
+    .header {
+        font-size: 12px;
+
+    }
+    .logo-title {
+        font-size: 15px;
+    }
+    .logo-subtitle {
+        font-size: 11px;
+    }
+    .lang-switch {
+        display:none;
+    }
+    .citylst {
+        display: flex
+    ;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin: 10px 0;
+        margin: 25px;
+        flex-direction: column;
+        align-content: center;
+    }
+}
+
+
+        .popup-overlayx {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .popupx {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 30px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            border-left: 7px solid #ff4d4d;
+        }
+        .popupx h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .popupx h2 svg {
+            margin-right: 10px;
+            width: 30px;
+            height: 30px;
+        }
+        .popupx p {
+            color: #666;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        #closeSuccessPopup {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        #closeSuccessPopup:hover {
+            background-color: #ff3333;
+        }
+        .popup-iconx {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        .popup-iconx svg {
+            width: 70px;
+            height: 70px;
+            fill: #ff4d4d;
+        }

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Türkiye Demokrasi Haritası</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="icon" type="image/png" href="Flag_of_Turkey.png">
+    
+    
+
+
+</head>
+<body>
+    <div id="successPopup" class="popup-overlayx" style="display: none;">
+        <div class="popupx">
+            <div class="popup-iconx">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+                </svg>
+            </div>
+            <h2>Teşekkürler!</h2>
+            <p><span id="kisisay"></span>. Kişi Sesini yükselttiğin ve demokrasi için mücadele ettiğin için teşekkür ederiz. Birlikte değişim yaratıyoruz.</p>
+            
+            <button id="closeSuccessPopup">Devam Et</button>
+        </div>
+    </div>
+     
+    <!-- Popup (Varsayılan olarak gizli) -->
+    <div id="cityPopup" class="popup-overlay">
+        <div class="popup">
+            <h2>Harekete Katıl!</h2>
+            <select id="citySelect">
+                <option value="">Bir şehir seçin</option>
+            </select>
+            <button id="participateBtn">Bende Varım!</button>
+            <span class="close-popup">&times;</span>
+        </div>
+    </div>
+
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">TR</div>
+            <div class="logo-text">
+                <div class="logo-title">Demokrasi Platformu</div>
+                <div class="logo-subtitle">Adalet İçin Birlikte</div>
+            </div>
+        </div>
+        <nav id="cv1s" class="nav-menu">
+            <a  class="nav-link">Anasayfa</a>
+            <a href="https://t.me/demokrasi2025" target="_blank" class="nav-link">Protestolar</a>
+            <a href="https://t.me/demokrasi2025" target="_blank" class="nav-link">Etkinlikler</a>
+            <a href="https://t.me/demokrasi2025" target="_blank" class="nav-link">İletişim</a>
+        </nav>
+        <div class="action-buttons">
+            <div class="lang-switch">
+                <button class="lang-btn active">TR</button>
+                <button class="lang-btn">EN</button>
+            </div>
+            <a href="https://t.me/demokrasi2025" target="_blank" class="btn btn-secondary">Bilgi Al</a>
+            <a id="openPopupBtn" class="btn btn-primary">Destek Ol</a>
+        </div>
+    </header>
+    
+    <div class="main" style="margin-top: 100px;">
+
+        <div id="trmap" style="text-align: center;">
+            <h1> DEMOKRASİ HARİTASI - 25.03.2025</h1>
+        </div>
+        
+        <div id="information" style="text-align: center; padding-bottom: 100px;">
+            Bu harita, Türkiye genelinde adalet için gerçekleştirilen yürüyüş ve protestoların yoğunluğunu göstermektedir. Renkler, şehirlerdeki katılım düzeyine göre değişmektedir; koyu kırmızı alanlar daha yüksek katılımı, açık renkler ise daha düşük katılımı temsil etmektedir. Adaletin ve özgürlüğün sesi olmak için birlikte yürüyelim!
+        </div>
+
+        <hr>
+
+        <div id="listcts" style="    width: 100%;">
+            <div class="city-ranking">
+                <h2>Şehir Katılım Sıralaması</h2>
+                <div class="citylst">
+                    <span class="city-name">İstanbul</span>
+                    <div class="progress-bar" style="width: 90%; background-color: #ff0000;"></div>
+                    <span class="percentage">100B</span>
+                </div>
+                <div class="citylst">
+                    <span class="city-name">Ankara</span>
+                    <div class="progress-bar" style="width: 75%; background-color: #ff4500;"></div>
+                    <span class="percentage">75B</span>
+                </div>
+                <div class="citylst">
+                    <span class="city-name">İzmir</span>
+                    <div class="progress-bar" style="width: 60%; background-color: #ff8c00;"></div>
+                    <span class="percentage">50B</span>
+                </div>
+                <div class="citylst">
+                    <span class="city-name">Bursa</span>
+                    <div class="progress-bar" style="width: 50%; background-color: #ffa500;"></div>
+                    <span class="percentage">40B</span>
+                </div>
+                <div class="citylst">
+                    <span class="city-name">Antalya</span>
+                    <div class="progress-bar" style="width: 40%; background-color: #ffd700;"></div>
+                    <span class="percentage">20B</span>
+                </div>
+                <h3 style="padding: 50px;">TOPLAM Demokrasi Hareketliliği : 99999</h3>
+            </div>
+
+            
+        </div>
+
+        <hr>
+
+        
+    </div>
+
+    <!-- Tooltip -->
+    <div id="tooltip" class="tooltip"></div>
+
+    <script>
+let widtha = Math.max(window.innerWidth, 1); // Minimum 1000px
+const width = (widtha * 92) / 100, height = width / 2;
+
+const svg = d3.select("#trmap").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+const projection = d3.geoMercator()
+    .center([35, 39])
+    .scale(widtha * 2.7) // Dinamik ölçeklendirme
+    .translate([width / 2, height / 2]);
+
+
+
+const path = d3.geoPath().projection(projection);
+
+// Tooltip seçimi
+const tooltip = d3.select("#tooltip");
+
+// ** API'den şehir verilerini çek **
+async function fetchSehirler() {
+    const apiURL = "https://demokrasi2025.com/apis/db.php"; // PHP API'nizin adresini girin
+
+    try {
+        const response = await fetch(apiURL);
+        if (!response.ok) {
+            throw new Error(`HTTP Hatası: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log("API'den gelen şehir verileri:", data);
+        return data;
+    } catch (error) {
+        console.error("Şehir verisi alınırken hata oluştu:", error);
+        return null;
+    }
+}
+
+// ** Haritayı Çiz ve Renklendir **
+async function drawMap() {
+    let cityData = {}; // Katılım verisi burada tutulacak
+    const sehirVerileri = await fetchSehirler();
+    if (!sehirVerileri) {
+        console.error("Şehir verisi yüklenemedi.");
+        return;
+    }
+
+    d3.json("https://raw.githubusercontent.com/alpers/Turkey-Maps-GeoJSON/master/tr-cities.json").then(geoData => {
+        // ** Şehir verilerini eşleştir **
+        geoData.features.forEach(d => {
+            const cityInfo = sehirVerileri.find(s => s.sehir === d.properties.name);
+            cityData[d.properties.name] = cityInfo ? cityInfo.katilim : 0; // Eğer veri yoksa 0 ata
+        });
+
+        // ** Minimum ve maksimum katılımı bul **
+        const minDensity = Math.min(...Object.values(cityData));
+        const maxDensity = Math.max(...Object.values(cityData));
+
+        // ** Renk skalası: Beyaz → Açık Kırmızı → Koyu Kırmızı **
+        const colorScale = d3.scaleLog()
+            .base(10)  // Log tabanını 10 yaparak farkı artırıyoruz
+            .domain([100, 20000])  // minDensity 1000'den başlasın (çok küçük değerleri düzeltir)
+            .range(["#ffffff", "#ff8080", "#ff0000"]);  // Beyaz → Açık Kırmızı → Koyu Kırmızı
+
+        // ** Şehirleri çiz **
+        svg.selectAll(".city")
+            .data(geoData.features)
+            .enter().append("path")
+            .attr("class", "city")
+            .attr("d", path)
+            .attr("fill", d => colorScale(cityData[d.properties.name])) // Katılım yoğunluğuna göre renk
+            .attr("stroke", "#1A2C4F")
+            .attr("stroke-width", 1)
+            .on("mouseover", function (event, d) {
+                tooltip.style("opacity", 1);
+                d3.select(this).attr("stroke", "#333").attr("stroke-width", 2);
+            })
+            .on("mousemove", function (event, d) {
+                let population = Number(cityData[d.properties.name]); // Sayıya çevir
+                let formattedPopulation = population.toLocaleString('tr-TR'); // Binlik ayraç ekle
+                
+                tooltip
+                    .html(`<strong>${d.properties.name}</strong><br>Katılım: ${formattedPopulation} kişi`)
+                    .style("left", (event.pageX + 10) + "px")
+                    .style("top", (event.pageY - 20) + "px");
+            })
+            .on("mouseout", function () {
+                tooltip.style("opacity", 0);
+                d3.select(this).attr("stroke", "#1A2C4F").attr("stroke-width", 1);
+            });
+
+    }).catch(error => {
+        console.error("GeoJSON verisi yüklenirken hata oluştu:", error);
+    });
+}
+
+// ** Haritayı başlat **
+document.addEventListener("DOMContentLoaded", drawMap);
+
+async function updateCityRanking() {
+    const apiURL = "https://demokrasi2025.com/apis/db.php"; // API adresini buraya yaz
+    const listContainer = document.querySelector("#listcts .city-ranking");
+    
+    try {
+        const response = await fetch(apiURL);
+        if (!response.ok) {
+            throw new Error(`HTTP Hatası: ${response.status}`);
+        }
+        const data = await response.json();
+        
+        // Verileri büyükten küçüğe sırala
+        const sortedData = data.sort((a, b) => b.katilim - a.katilim);
+
+        // Toplam katılımı hesapla
+        let totalParticipation = sortedData.reduce((sum, city) => sum + Number(city.katilim), 0);
+        
+        // Önceki içeriği temizle
+        listContainer.innerHTML = `<h2>Şehir Katılım Sıralaması</h2>`;
+
+        // En yüksek katılımı bul (yüzdelik hesaplama için)
+        const maxParticipation = sortedData[0]?.katilim || 1;
+
+        // Şehirleri listeye ekle
+        let sayi = 1;
+        sortedData.forEach(city => {
+            let percentage = ((city.katilim / maxParticipation) * 100).toFixed(2);
+            let formattedParticipation = Number(city.katilim).toLocaleString('tr-TR'); // 100000 → 100.000
+            
+            if (formattedParticipation == "0"){
+                return;
+            }
+            let cityHTML = `
+                <div class="citylst">
+                    <span class="city-name">${sayi}. ${city.sehir}</span>
+                    <div class="progress-bar" style="width: ${percentage}%; background-color: #ff0000;"></div>
+                    <span class="percentage">${formattedParticipation}</span>
+                </div>
+            `;
+            listContainer.innerHTML += cityHTML;
+            sayi +=1;
+        });
+
+        // Toplamı ekle
+        listContainer.innerHTML += `<h3 style="padding: 50px;">TOPLAM Demokrasi Hareketliliği: ${totalParticipation.toLocaleString('tr-TR')}</h3>`;
+
+    } catch (error) {
+        console.error("Şehir sıralaması güncellenirken hata oluştu:", error);
+    }
+}
+
+// Sayfa yüklendiğinde çalıştır
+document.addEventListener("DOMContentLoaded", updateCityRanking);
+
+async function increaseParticipation(plaka) {
+    const apiURL = "https://demokrasi2025.com/apis/db.php";
+
+    const response = await fetch(apiURL, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plaka: plaka }) 
+    });
+
+    const result = await response.json();
+    console.log(result);
+}
+
+
+
+
+// İstanbul (plaka: 34) için +1 kişi ekle
+//increaseParticipation(34);
+document.addEventListener("DOMContentLoaded", () => {
+    
+        const successPopup = document.getElementById("successPopup");
+        const closeSuccessPopup = document.getElementById("closeSuccessPopup");
+    
+        function showSuccessPopup() {
+            successPopup.style.display = "flex"; // Popup'u aç
+        }
+    
+        closeSuccessPopup.addEventListener("click", () => {
+            successPopup.style.display = "none"; // Kapatma butonuna basınca kapat
+        });
+    
+        // Kullanıcı dışarı tıklarsa popup'ı kapat
+        successPopup.addEventListener("click", (event) => {
+            if (event.target === successPopup) {
+                successPopup.style.display = "none";
+            }
+        });
+
+    const kisisay = document.getElementById("kisisay");
+    const cityPopup = document.getElementById("cityPopup");
+    const closePopup = document.querySelector(".close-popup");
+    const citySelect = document.getElementById("citySelect");
+    const participateBtn = document.getElementById("participateBtn");
+
+    // Şehir listesi ve plakaları
+    const cities = [
+        { plaka: 1, sehir: "Adana" }, { plaka: 2, sehir: "Adıyaman" }, { plaka: 3, sehir: "Afyonkarahisar" },
+        { plaka: 4, sehir: "Ağrı" }, { plaka: 5, sehir: "Amasya" }, { plaka: 6, sehir: "Ankara" },
+        { plaka: 7, sehir: "Antalya" }, { plaka: 8, sehir: "Artvin" }, { plaka: 9, sehir: "Aydın" },
+        { plaka: 10, sehir: "Balıkesir" }, { plaka: 11, sehir: "Bilecik" }, { plaka: 12, sehir: "Bingöl" },
+        { plaka: 13, sehir: "Bitlis" }, { plaka: 14, sehir: "Bolu" }, { plaka: 15, sehir: "Burdur" },
+        { plaka: 16, sehir: "Bursa" }, { plaka: 17, sehir: "Çanakkale" }, { plaka: 18, sehir: "Çankırı" },
+        { plaka: 19, sehir: "Çorum" }, { plaka: 20, sehir: "Denizli" }, { plaka: 21, sehir: "Diyarbakır" },
+        { plaka: 22, sehir: "Edirne" }, { plaka: 23, sehir: "Elazığ" }, { plaka: 24, sehir: "Erzincan" },
+        { plaka: 25, sehir: "Erzurum" }, { plaka: 26, sehir: "Eskişehir" }, { plaka: 27, sehir: "Gaziantep" },
+        { plaka: 28, sehir: "Giresun" }, { plaka: 29, sehir: "Gümüşhane" }, { plaka: 30, sehir: "Hakkâri" },
+        { plaka: 31, sehir: "Hatay" }, { plaka: 32, sehir: "Isparta" }, { plaka: 33, sehir: "Mersin" },
+        { plaka: 34, sehir: "İstanbul" }, { plaka: 35, sehir: "İzmir" }, { plaka: 36, sehir: "Kars" },
+        { plaka: 37, sehir: "Kastamonu" }, { plaka: 38, sehir: "Kayseri" }, { plaka: 39, sehir: "Kırklareli" },
+        { plaka: 40, sehir: "Kırşehir" }, { plaka: 41, sehir: "Kocaeli" }, { plaka: 42, sehir: "Konya" },
+        { plaka: 43, sehir: "Kütahya" }, { plaka: 44, sehir: "Malatya" }, { plaka: 45, sehir: "Manisa" },
+        { plaka: 46, sehir: "Kahramanmaraş" }, { plaka: 47, sehir: "Mardin" }, { plaka: 48, sehir: "Muğla" },
+        { plaka: 49, sehir: "Muş" }, { plaka: 50, sehir: "Nevşehir" }, { plaka: 51, sehir: "Niğde" },
+        { plaka: 52, sehir: "Ordu" }, { plaka: 53, sehir: "Rize" }, { plaka: 54, sehir: "Sakarya" },
+        { plaka: 55, sehir: "Samsun" }, { plaka: 56, sehir: "Siirt" }, { plaka: 57, sehir: "Sinop" },
+        { plaka: 58, sehir: "Sivas" }, { plaka: 59, sehir: "Tekirdağ" }, { plaka: 60, sehir: "Tokat" },
+        { plaka: 61, sehir: "Trabzon" }, { plaka: 62, sehir: "Tunceli" }, { plaka: 63, sehir: "Şanlıurfa" },
+        { plaka: 64, sehir: "Uşak" }, { plaka: 65, sehir: "Van" }, { plaka: 66, sehir: "Yozgat" },
+        { plaka: 67, sehir: "Zonguldak" }, { plaka: 81, sehir: "Düzce" }
+    ];
+
+    cities.forEach(city => {
+        const option = document.createElement("option");
+        option.value = city.plaka;
+        option.textContent = city.sehir;
+        citySelect.appendChild(option);
+    });
+
+    participateBtn.addEventListener("click", async () => {
+        const plaka = citySelect.value;
+        if (!plaka) return alert("Lütfen bir şehir seçin!");
+        fetchSehirler().then(data => {
+            
+        const plaka4Sehir = data.find(data => data.plaka === plaka);
+        console.log(plaka4Sehir);
+        
+        if (plaka4Sehir) {
+            kisisay.innerHTML = Number(plaka4Sehir.katilim).toLocaleString("tr-TR");
+        }
+        
+        return plaka4Sehir;
+        });
+        await fetch("https://demokrasi2025.com/apis/db.php", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ plaka: parseInt(plaka) })
+        });
+
+        
+        
+        showSuccessPopup();
+        cityPopup.style.display = "none";
+    });
+
+    closePopup.addEventListener("click", () => cityPopup.style.display = "none");
+});
+
+document.getElementById("openPopupBtn").addEventListener("click", () => {
+    document.getElementById("cityPopup").style.display = "flex";
+});
+
+
+    </script>
+</body>
+</html>
